@@ -5,6 +5,7 @@ const DataModule = require("./DataManage");
  * @async
  * @method
  * @param {String} year - season
+ * @returns {undefined} When parameters are not given.
  */
 const getExtraRunsConceded = function (year) {
   if (year === undefined) return undefined;
