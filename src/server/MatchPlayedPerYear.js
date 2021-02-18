@@ -2,7 +2,6 @@ const DataModule = require("./DataManage");
 
 /**
  * Retrieves match played per year.
- * @async
  * @method
  */
 

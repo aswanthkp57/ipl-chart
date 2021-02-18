@@ -16,4 +16,3 @@ const writeJsontoFile = function (data, fileName) {
 };
 
 module.exports = { getDataObject, writeJsontoFile };
-s
