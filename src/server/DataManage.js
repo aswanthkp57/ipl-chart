@@ -1,5 +1,8 @@
 const csv = require("csvtojson");
 const fs = require("fs");
+const path = require('path');
+const process = require('process'); 
+
 
 /**
  * Retrieves object from csv file.
@@ -10,7 +13,9 @@ const fs = require("fs");
  * @throws {Error} When the file is not found.
  */
 const getDataObject = async function (fileName) {
-  const csvFilePath = `../src/data/${fileName}`;
+  const absolute = path.join(__dirname,'../data')
+  const relative =path.relative(process.cwd(), absolute)
+  const csvFilePath = `${relative}/${fileName}`;
   const dataObj = await csv().fromFile(csvFilePath);
   return dataObj;
 };
@@ -25,7 +30,9 @@ const getDataObject = async function (fileName) {
  * @throws {Error} When error in writing.
  */
 const writeJsontoFile = function (data, fileName) {
-  const jsonFilePath = `../src/public/output/${fileName}`;
+  const absolute = path.join(__dirname,'../public/output/')
+  const relative =path.relative(process.cwd(),absolute )
+  const jsonFilePath = `${relative}/${fileName}`;
   fs.writeFile(jsonFilePath, JSON.stringify(data), (err) => {
     if (err) console.log(`Error ${err}`);
     else console.log(`Data Saved as ${fileName}`);
