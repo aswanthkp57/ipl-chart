@@ -34,16 +34,37 @@ const server = http.createServer((req, res) => {
       });
       break;
     case "/plot.js":
-      let plotJSPath = path.resolve(
-        __dirname,
-        "../client/plot.js"
-      );
+      let plotJSPath = path.resolve(__dirname, "../client/plot.js");
       fs.readFile(plotJSPath, "utf-8", (err, data) => {
         if (err) {
           res.writeHead(404);
           res.end(err);
         } else {
           res.writeHead(200, { "Content-Type": "text/javascript" });
+          res.end(data);
+        }
+      });
+      break;
+    case "/extraruns":
+      let matchwonPath = path.resolve(__dirname, "../client/extraRunConceded.html");
+      fs.readFile(matchwonPath, "utf-8", (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end(err);
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(data);
+        }
+      });
+      break;
+      case "/extrarunsconcededData":
+      let extraRunsConcededDataPath = path.resolve(__dirname, "../public/output/ExtraRunsConceded.json");
+      fs.readFile(extraRunsConcededDataPath, "utf-8", (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end(err);
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
           res.end(data);
         }
       });

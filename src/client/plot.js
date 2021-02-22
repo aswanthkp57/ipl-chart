@@ -16,6 +16,7 @@ const fetchMatchPlayedData = function (){
 }
 
 
+
 function displayMatchPlayedHighChart(matchPlayedArray){
     Highcharts.chart('container', {
     chart: {
@@ -66,8 +67,13 @@ function displayMatchPlayedHighChart(matchPlayedArray){
         }
     }]
 });
+
+
 }
 
 
-fetchMatchPlayedData();
+
+
+ fetchMatchPlayedData();
+
 
