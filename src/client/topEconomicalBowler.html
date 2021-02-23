@@ -22,52 +22,42 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="">Match Won</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="http://localhost:3000/extraruns">Extra Runs Conceded</a>
-                </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/matchwon">Extra Runs Conceded</a>
+                </li>
+                <li class="nav-item active">
                     <a class="nav-link " href="http://localhost:3000/topeconomic">Top Economical Bowler</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <!-- <h3>Select Year </h3>
-
-    <select name="Year" id="year">
-        <script>
-            let matchWonArray =fetchMatchWonData();
-            for (year in matchWonArray){
-                document.write('<option value='+year+'>'+year+'</option>');
-            }
-            
-        </script> 
-      </select> -->
     <div id="container1" style="width:100%; height:400px;"></div>
 
 </body>
 <script>
-    const fetchExtraRunData = function () {
-        let extraRunsArray =[];
-    fetch('http://localhost:3000/extrarunsconcededData').then(function(response) {
+    const fetchTopEconomicData = function () {
+        let topEconomicArray =[];
+    fetch('http://localhost:3000/topeconomicData').then(function(response) {
         response.json().then(function(data) {
-            console.log(data)
             console.log(' data loaded in api')
-            for(key in data){
-                extraRunsArray.push([key,data[key]]);
+            for(index in data){
+                console.log(data[index])
+                topEconomicArray.push([data[index]['bowler'],data[index]['economic']]);
             }
-            displayExtraRunsConcededHighChart(extraRunsArray);
+            console.log(topEconomicArray)
+            displayExtraRunsConcededHighChart(topEconomicArray);
             });
     });
     }
 
-    function displayExtraRunsConcededHighChart( extraRunsArray) {
+    function displayExtraRunsConcededHighChart( topEconomicArray) {
 
         Highcharts.chart('container1', {
             chart: {
                 type: 'column'
             },
             title: {
-                text: 'Extra Runs Conceded per Team in 2015'
+                text: 'Top 10 Economical Bowler in 2015'
             },
             xAxis: {
                 type: 'category',
@@ -82,18 +72,18 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Extra Runs Conceded'
+                    text: 'Economic'
                 }
             },
             legend: {
                 enabled: false
             },
             tooltip: {
-                pointFormat: 'Extra Runs Conceded 2015: <b>{point.y:.1f} Runs</b>'
+                pointFormat: 'Economic in  2015: <b>{point.y:.1f} Runs</b>'
             },
             series: [{
-                name: 'Extra Runs Conceded',
-                data: extraRunsArray,
+                name: 'Economical Bowler',
+                data: topEconomicArray,
                 dataLabels: {
                     enabled: true,
                     rotation: -90,
@@ -109,7 +99,7 @@
             }]
         });
     }
-    fetchExtraRunData();
+    fetchTopEconomicData();
 </script>
 
 </html>

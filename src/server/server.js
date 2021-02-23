@@ -46,7 +46,10 @@ const server = http.createServer((req, res) => {
       });
       break;
     case "/extraruns":
-      let matchwonPath = path.resolve(__dirname, "../client/extraRunConceded.html");
+      let matchwonPath = path.resolve(
+        __dirname,
+        "../client/extraRunConceded.html"
+      );
       fs.readFile(matchwonPath, "utf-8", (err, data) => {
         if (err) {
           res.writeHead(404);
@@ -57,9 +60,42 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
-      case "/extrarunsconcededData":
-      let extraRunsConcededDataPath = path.resolve(__dirname, "../public/output/ExtraRunsConceded.json");
+    case "/extrarunsconcededData":
+      let extraRunsConcededDataPath = path.resolve(
+        __dirname,
+        "../public/output/ExtraRunsConceded.json"
+      );
       fs.readFile(extraRunsConcededDataPath, "utf-8", (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end(err);
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(data);
+        }
+      });
+      break;
+    case "/topeconomic": 
+      let topeconomicPath = path.resolve(
+        __dirname,
+        "../client/topEconomicalBowler.html"
+      );
+      fs.readFile(topeconomicPath, "utf-8", (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end(err);
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(data);
+        }
+      });
+      break;
+    case "/topeconomicData":
+      let topeconomicPathDataPath = path.resolve(
+        __dirname,
+        "../public/output/TopEconomy.json"
+      );
+      fs.readFile(topeconomicPathDataPath, "utf-8", (err, data) => {
         if (err) {
           res.writeHead(404);
           res.end(err);
