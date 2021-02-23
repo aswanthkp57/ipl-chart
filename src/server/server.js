@@ -18,6 +18,7 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
+
     case "/matchplayed":
       let matchPlayedDataPath = path.resolve(
         __dirname,
@@ -28,11 +29,12 @@ const server = http.createServer((req, res) => {
           res.writeHead(404);
           res.end(err);
         } else {
-          res.writeHead(200, { "Content-Type": "text/json" });
+          res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
         }
       });
       break;
+
     case "/plot.js":
       let plotJSPath = path.resolve(__dirname, "../client/plot.js");
       fs.readFile(plotJSPath, "utf-8", (err, data) => {
@@ -45,12 +47,13 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
+
     case "/extraruns":
-      let matchwonPath = path.resolve(
+      let extrarunsPath = path.resolve(
         __dirname,
         "../client/extraRunConceded.html"
       );
-      fs.readFile(matchwonPath, "utf-8", (err, data) => {
+      fs.readFile(extrarunsPath, "utf-8", (err, data) => {
         if (err) {
           res.writeHead(404);
           res.end(err);
@@ -60,6 +63,7 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
+
     case "/extrarunsconcededData":
       let extraRunsConcededDataPath = path.resolve(
         __dirname,
@@ -70,12 +74,13 @@ const server = http.createServer((req, res) => {
           res.writeHead(404);
           res.end(err);
         } else {
-          res.writeHead(200, { "Content-Type": "text/html" });
+          res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
         }
       });
       break;
-    case "/topeconomic": 
+
+    case "/topeconomic":
       let topeconomicPath = path.resolve(
         __dirname,
         "../client/topEconomicalBowler.html"
@@ -90,6 +95,7 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
+
     case "/topeconomicData":
       let topeconomicPathDataPath = path.resolve(
         __dirname,
@@ -100,7 +106,39 @@ const server = http.createServer((req, res) => {
           res.writeHead(404);
           res.end(err);
         } else {
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(data);
+        }
+      });
+      break;
+
+    case "/matchwon":
+      let matchwonPath = path.resolve(
+        __dirname,
+        "../client/matchWonPerTeam.html"
+      );
+      fs.readFile(matchwonPath, "utf-8", (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end(err);
+        } else {
           res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(data);
+        }
+      });
+      break;
+      
+    case "/matchwonData":
+      let matchwonPathDataPath = path.resolve(
+        __dirname,
+        "../public/output/NumberOfMatchWon.json"
+      );
+      fs.readFile(matchwonPathDataPath, "utf-8", (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end(err);
+        } else {
+          res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
         }
       });

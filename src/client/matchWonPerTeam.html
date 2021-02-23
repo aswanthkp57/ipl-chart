@@ -16,10 +16,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/">Match Played </a>
+                    <a class="nav-link" href="http://localhost:3000/">Match Played <span
+                            class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/matchwon">Match Won</a>
+                    <a class="nav-link" href="http://localhost:3000/topeconomic">Match Won</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="http://localhost:3000/extraruns">Extra Runs Conceded</a>
@@ -30,43 +31,54 @@
             </ul>
         </div>
     </nav>
-    <!-- <h3>Select Year </h3>
+    <h3>Select Year </h3>
 
     <select name="Year" id="year">
-        <script>
-            let matchWonArray =fetchMatchWonData();
-            for (year in matchWonArray){
-                document.write('<option value='+year+'>'+year+'</option>');
-            }
-            
-        </script> 
-      </select> -->
+        >
+
+    </select>
     <div id="container1" style="width:100%; height:400px;"></div>
 
 </body>
+
 <script>
-    const fetchExtraRunData = function () {
-        let extraRunsArray =[];
-    fetch('http://localhost:3000/extrarunsconcededData').then(function(response) {
-        response.json().then(function(data) {
-            console.log(data)
-            console.log(' data loaded in api')
-            for(key in data){
-                extraRunsArray.push([key,data[key]]);
-            }
-            displayExtraRunsConcededHighChart(extraRunsArray);
+    const fetchMatchWonData = function () {
+        let matchWonArray = [];
+        fetch('http://localhost:3000/matchwonData').then(function (response) {
+            response.json().then(function (data) {
+                //create a dropdown of years and add that to select tag
+                let dropdown = '';
+                for (key in data) {
+                    dropdown += '<option value=' + key + '>' + key + '</option>';
+                }
+                // add 2008 chart as default
+                for (key in data['2008']) {
+                    matchWonArray.push([key, data['2008'][key]])
+                    displayExtraRunsConcededHighChart('2008',matchWonArray);
+                }
+                matchWonArray = [];
+                //add onChange event listener to the select tag and send that object to displayExtraRunsConcededHighChart
+                let yearDropDown = document.querySelector('#year')
+                yearDropDown.innerHTML = dropdown;
+                yearDropDown.addEventListener("change", (event) => {
+                    let selectedYear = event.target.value;
+                    for (key in data[selectedYear]) {
+                        matchWonArray.push([key, data[selectedYear][key]])
+                    }
+                    displayExtraRunsConcededHighChart(selectedYear,matchWonArray);
+                })
             });
-    });
+        });
     }
 
-    function displayExtraRunsConcededHighChart( extraRunsArray) {
-
+    function displayExtraRunsConcededHighChart(year,matchWonArray) {
+       
         Highcharts.chart('container1', {
             chart: {
                 type: 'column'
             },
             title: {
-                text: 'Extra Runs Conceded per Team in 2015'
+                text: 'Extra Runs Conceded per Team in '+year
             },
             xAxis: {
                 type: 'category',
@@ -81,24 +93,23 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Extra Runs Conceded'
+                    text: 'Match Won'
                 }
             },
             legend: {
                 enabled: false
             },
             tooltip: {
-                pointFormat: 'Extra Runs Conceded 2015: <b>{point.y:.1f} Runs</b>'
+                pointFormat: 'Match Won in '+year+': <b>{point.y:.1f} Runs</b>'
             },
             series: [{
-                name: 'Extra Runs Conceded',
-                data: extraRunsArray,
+                name: 'Match Won',
+                data: matchWonArray,
                 dataLabels: {
                     enabled: true,
                     rotation: -90,
                     color: '#FFFFFF',
                     align: 'right',
-                    format: '{point.y:.1f}', // one decimal
                     y: 10, // 10 pixels down from the top
                     style: {
                         fontSize: '13px',
@@ -108,7 +119,7 @@
             }]
         });
     }
-    fetchExtraRunData();
+    fetchMatchWonData();
 </script>
 
 </html>
