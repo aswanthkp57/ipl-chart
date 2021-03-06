@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const dataModel = require("../database/dataModel");
 
 const PORT = 3000;
 
@@ -20,19 +21,18 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/matchplayed":
-      let matchPlayedDataPath = path.resolve(
-        __dirname,
-        "../public/output/MatchPlayedperYear.json"
-      );
-      fs.readFile(matchPlayedDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
+      dataModel
+        .getMatchPlayedPerYear()
+        .then((data) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
+
       break;
 
     case "/plot.js":
@@ -127,7 +127,7 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
-      
+
     case "/matchwonData":
       let matchwonPathDataPath = path.resolve(
         __dirname,
