@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/">Match Played </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/matchwon">Match Won</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:3000/extraruns">Extra Runs Conceded</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="http://localhost:3000/topeconomic">Top Economical Bowler</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- <h3>Select Year </h3>
+
+    <select name="Year" id="year">
+        <script>
+            let matchWonArray =fetchMatchWonData();
+            for (year in matchWonArray){
+                document.write('<option value='+year+'>'+year+'</option>');
+            }
+            
+        </script> 
+      </select> -->
+    <div id="container1" style="width:100%; height:400px;"></div>
+
+</body>
+<script>
+    const fetchExtraRunData = function () {
+        let extraRunsArray =[];
+    fetch('http://localhost:3000/extrarunsconcededData').then(function(response) {
+        response.json().then(function(data) {
+            console.log(data)
+            console.log(' data loaded in api')
+            for(key in data){
+                extraRunsArray.push([key,data[key]]);
+            }
+            displayExtraRunsConcededHighChart(extraRunsArray);
+            });
+    });
+    }
+
+    function displayExtraRunsConcededHighChart( extraRunsArray) {
+
+        Highcharts.chart('container1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Extra Runs Conceded per Team in 2015'
+            },
+            xAxis: {
+                type: 'category',
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Extra Runs Conceded'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: 'Extra Runs Conceded 2015: <b>{point.y:.1f} Runs</b>'
+            },
+            series: [{
+                name: 'Extra Runs Conceded',
+                data: extraRunsArray,
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}', // one decimal
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+        });
+    }
+    fetchExtraRunData();
+</script>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/">Match Played <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/matchwon">Match Won</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/matchwon">Extra Runs Conceded</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link " href="http://localhost:3000/topeconomic">Top Economical Bowler</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="container1" style="width:100%; height:400px;"></div>
+
+</body>
+<script>
+    const fetchTopEconomicData = function () {
+        let topEconomicArray =[];
+    fetch('http://localhost:3000/topeconomicData').then(function(response) {
+        response.json().then(function(data) {
+            console.log(' data loaded in api')
+            for(index in data){
+                console.log(data[index])
+                topEconomicArray.push([data[index]['bowler'],data[index]['economic']]);
+            }
+            console.log(topEconomicArray)
+            displayExtraRunsConcededHighChart(topEconomicArray);
+            });
+    });
+    }
+
+    function displayExtraRunsConcededHighChart( topEconomicArray) {
+
+        Highcharts.chart('container1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Top 10 Economical Bowler in 2015'
+            },
+            xAxis: {
+                type: 'category',
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Economic'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: 'Economic in  2015: <b>{point.y:.1f} Runs</b>'
+            },
+            series: [{
+                name: 'Economical Bowler',
+                data: topEconomicArray,
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}', // one decimal
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+        });
+    }
+    fetchTopEconomicData();
+</script>
+
+</html>
