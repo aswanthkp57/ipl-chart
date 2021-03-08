@@ -1,8 +1,9 @@
 const getConnection = require("./database");
 
 let matchPlayedArray = [];
+let matchWonObject = {};
 
-function getMatchPlayedPerYear(cb) {
+function getMatchPlayedPerYear() {
   return new Promise((resolve, reject) => {
     let connection = getConnection();
     connection.connect((err) => {
@@ -28,4 +29,31 @@ function getMatchPlayedPerYear(cb) {
   });
 }
 
-module.exports = { getMatchPlayedPerYear };
+function getMatchWonPerYear() {
+  return new Promise((resolve, reject) => {
+    let connection = getConnection();
+    connection.connect((err) => {
+      if (err) reject(err);
+      else {
+        let query =
+          "select season,winner,count(winner) as matches from matches group by season,winner order by season";
+        connection.query(query, (err, result) => {
+          if (err) reject(err);
+          else {
+            result.forEach((ele) => {
+              if (ele.season in matchWonObject) {
+                matchWonObject[ele.season][ele.winner] = ele.matches;
+              } else {
+                matchWonObject[ele.season] = { [ele.winner]: ele.matches };
+              }
+            });
+          }
+          connection.end();
+          resolve(JSON.stringify(matchWonObject));
+        });
+      }
+    });
+  });
+}
+
+module.exports = { getMatchPlayedPerYear, getMatchWonPerYear };

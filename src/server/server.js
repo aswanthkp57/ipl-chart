@@ -129,19 +129,19 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/matchwonData":
-      let matchwonPathDataPath = path.resolve(
-        __dirname,
-        "../public/output/NumberOfMatchWon.json"
-      );
-      fs.readFile(matchwonPathDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
-          res.writeHead(200, { "Content-Type": "application/json" });
+      dataModel
+        .getMatchWonPerYear()
+        .then((data) => {
+          res.writeHead(200, {
+            "content-type": "application/json",
+          });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          res.writeHead(404);
+          console.log(err);
+          res.end(err);
+        });
       break;
   }
 });

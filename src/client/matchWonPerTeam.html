@@ -19,10 +19,10 @@
                     <a class="nav-link" href="http://localhost:3000/">Match Played <span
                             class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/topeconomic">Match Won</a>
-                </li>
                 <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:3000/matchwon">Match Won</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/extraruns">Extra Runs Conceded</a>
                 </li>
                 <li class="nav-item">
@@ -46,6 +46,7 @@
         let matchWonArray = [];
         fetch('http://localhost:3000/matchwonData').then(function (response) {
             response.json().then(function (data) {
+                console.log(data)
                 //create a dropdown of years and add that to select tag
                 let dropdown = '';
                 for (key in data) {
@@ -54,31 +55,36 @@
                 // add 2008 chart as default
                 for (key in data['2008']) {
                     matchWonArray.push([key, data['2008'][key]])
-                    displayExtraRunsConcededHighChart('2008',matchWonArray);
+                    displayExtraRunsConcededHighChart('2008', matchWonArray);
                 }
-                matchWonArray = [];
+
                 //add onChange event listener to the select tag and send that object to displayExtraRunsConcededHighChart
                 let yearDropDown = document.querySelector('#year')
                 yearDropDown.innerHTML = dropdown;
                 yearDropDown.addEventListener("change", (event) => {
+                    matchWonArray = [];
                     let selectedYear = event.target.value;
+                    console.log(data[selectedYear])
                     for (key in data[selectedYear]) {
                         matchWonArray.push([key, data[selectedYear][key]])
                     }
-                    displayExtraRunsConcededHighChart(selectedYear,matchWonArray);
+                    // console.log(matchWonArray)
+                    displayExtraRunsConcededHighChart(selectedYear, matchWonArray);
                 })
-            });
+            }).catch(err => {
+                console.log(err)
+            })
         });
     }
 
-    function displayExtraRunsConcededHighChart(year,matchWonArray) {
-       
+    function displayExtraRunsConcededHighChart(year, matchWonArray) {
+
         Highcharts.chart('container1', {
             chart: {
                 type: 'column'
             },
             title: {
-                text: 'Extra Runs Conceded per Team in '+year
+                text: 'Match Won per Team in ' + year
             },
             xAxis: {
                 type: 'category',
@@ -100,7 +106,7 @@
                 enabled: false
             },
             tooltip: {
-                pointFormat: 'Match Won in '+year+': <b>{point.y:.1f} Runs</b>'
+                pointFormat: 'Match Won in ' + year + ': <b>{point.y:.1f} Runs</b>'
             },
             series: [{
                 name: 'Match Won',

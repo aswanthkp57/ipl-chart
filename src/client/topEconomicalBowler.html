@@ -19,11 +19,11 @@
                     <a class="nav-link" href="http://localhost:3000/">Match Played <span
                             class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/matchwon">Match Won</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/matchwon">Extra Runs Conceded</a>
+                    <a class="nav-link" href="http://localhost:3000/extraruns">Extra Runs Conceded</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link " href="http://localhost:3000/topeconomic">Top Economical Bowler</a>
@@ -36,21 +36,21 @@
 </body>
 <script>
     const fetchTopEconomicData = function () {
-        let topEconomicArray =[];
-    fetch('http://localhost:3000/topeconomicData').then(function(response) {
-        response.json().then(function(data) {
-            console.log(' data loaded in api')
-            for(index in data){
-                console.log(data[index])
-                topEconomicArray.push([data[index]['bowler'],data[index]['economic']]);
-            }
-            console.log(topEconomicArray)
-            displayExtraRunsConcededHighChart(topEconomicArray);
+        let topEconomicArray = [];
+        fetch('http://localhost:3000/topeconomicData').then(function (response) {
+            response.json().then(function (data) {
+                console.log(' data loaded in api')
+                for (index in data) {
+                    console.log(data[index])
+                    topEconomicArray.push([data[index]['bowler'], data[index]['economic']]);
+                }
+                console.log(topEconomicArray)
+                displayExtraRunsConcededHighChart(topEconomicArray);
             });
-    });
+        });
     }
 
-    function displayExtraRunsConcededHighChart( topEconomicArray) {
+    function displayExtraRunsConcededHighChart(topEconomicArray) {
 
         Highcharts.chart('container1', {
             chart: {
