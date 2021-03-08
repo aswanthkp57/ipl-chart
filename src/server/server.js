@@ -95,19 +95,18 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/topeconomicData":
-      let topeconomicPathDataPath = path.resolve(
-        __dirname,
-        "../public/output/TopEconomy.json"
-      );
-      fs.readFile(topeconomicPathDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
+      dataModel
+        .getTopEconomy()
+        .then((data) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
+
       break;
 
     case "/matchwon":

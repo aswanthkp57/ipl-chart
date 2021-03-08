@@ -3,6 +3,7 @@ const getConnection = require("./database");
 let matchPlayedArray = [];
 let matchWonObject = {};
 let extraRunsArray = [];
+let topEconomyArray = [];
 
 function getMatchPlayedPerYear() {
   return new Promise((resolve, reject) => {
@@ -80,8 +81,34 @@ function getExtraRunsConceded() {
     });
   });
 }
+
+function getTopEconomy() {
+  return new Promise((resolve, reject) => {
+    let connection = getConnection();
+    connection.connect((err) => {
+      if (err) reject(err);
+      else {
+        let query =
+          "select bowler, (sum(total_runs)/(count(*)/6)) as economy from deliveries  join matches on deliveries.match_id=matches.id where season = 2015 group by bowler order by (sum(total_runs)/(count(*)/6)) desc limit 10";
+        connection.query(query, (err, result) => {
+          if (err) reject(err);
+          else {
+            result.forEach((ele) => {
+              topEconomyArray.push([ele.bowler, ele.economy]);
+            });
+            console.log(topEconomyArray);
+            connection.end();
+          }
+          resolve(JSON.stringify(topEconomyArray));
+        });
+      }
+    });
+  });
+}
+
 module.exports = {
   getMatchPlayedPerYear,
   getMatchWonPerYear,
   getExtraRunsConceded,
+  getTopEconomy,
 };
