@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const dataModel = require("../database/dataModel");
 
 const PORT = 3000;
 
@@ -20,19 +21,18 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/matchplayed":
-      let matchPlayedDataPath = path.resolve(
-        __dirname,
-        "../public/output/MatchPlayedperYear.json"
-      );
-      fs.readFile(matchPlayedDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
+      dataModel
+        .getMatchPlayedPerYear()
+        .then((data) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
+
       break;
 
     case "/plot.js":
@@ -65,19 +65,17 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/extrarunsconcededData":
-      let extraRunsConcededDataPath = path.resolve(
-        __dirname,
-        "../public/output/ExtraRunsConceded.json"
-      );
-      fs.readFile(extraRunsConcededDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
+      dataModel
+        .getExtraRunsConceded()
+        .then((data) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
       break;
 
     case "/topeconomic":
@@ -97,19 +95,18 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/topeconomicData":
-      let topeconomicPathDataPath = path.resolve(
-        __dirname,
-        "../public/output/TopEconomy.json"
-      );
-      fs.readFile(topeconomicPathDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
+      dataModel
+        .getTopEconomy()
+        .then((data) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
+
       break;
 
     case "/matchwon":
@@ -127,21 +124,20 @@ const server = http.createServer((req, res) => {
         }
       });
       break;
-      
+
     case "/matchwonData":
-      let matchwonPathDataPath = path.resolve(
-        __dirname,
-        "../public/output/NumberOfMatchWon.json"
-      );
-      fs.readFile(matchwonPathDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
-          res.writeHead(200, { "Content-Type": "application/json" });
+      dataModel
+        .getMatchWonPerYear()
+        .then((data) => {
+          res.writeHead(200, {
+            "content-type": "application/json",
+          });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
       break;
   }
 });
