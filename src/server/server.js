@@ -65,19 +65,17 @@ const server = http.createServer((req, res) => {
       break;
 
     case "/extrarunsconcededData":
-      let extraRunsConcededDataPath = path.resolve(
-        __dirname,
-        "../public/output/ExtraRunsConceded.json"
-      );
-      fs.readFile(extraRunsConcededDataPath, "utf-8", (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end(err);
-        } else {
+      dataModel
+        .getExtraRunsConceded()
+        .then((data) => {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(data);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.writeHead(404);
+          res.end(JSON.stringify(err));
+        });
       break;
 
     case "/topeconomic":
@@ -139,8 +137,7 @@ const server = http.createServer((req, res) => {
         })
         .catch((err) => {
           res.writeHead(404);
-          console.log(err);
-          res.end(err);
+          res.end(JSON.stringify(err));
         });
       break;
   }

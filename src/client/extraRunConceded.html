@@ -47,16 +47,13 @@
 </body>
 <script>
     const fetchExtraRunData = function () {
-        let extraRunsArray = [];
         fetch('http://localhost:3000/extrarunsconcededData').then(function (response) {
             response.json().then(function (data) {
-                console.log(data)
-                console.log(' data loaded in api')
-                for (key in data) {
-                    extraRunsArray.push([key, data[key]]);
-                }
-                displayExtraRunsConcededHighChart(extraRunsArray);
-            });
+                // console.log(data)
+                displayExtraRunsConcededHighChart(data);
+            }).then(err => {
+                console.log(err)
+            })
         });
     }
 
@@ -67,7 +64,7 @@
                 type: 'column'
             },
             title: {
-                text: 'Extra Runs Conceded per Team in 2015'
+                text: 'Extra Runs Conceded per Team in 2016'
             },
             xAxis: {
                 type: 'category',
