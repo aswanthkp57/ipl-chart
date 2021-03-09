@@ -1,6 +1,7 @@
+require("dotenv").config();
 const fetchMatchPlayedData = function () {
   let matchPlayedArray = [];
-  fetch("http://localhost:3000/matchplayed")
+  fetch(process.env.APP_HOST + "/matchplayed")
     .then(function (response) {
       response.json().then(function (data) {
         console.log(" data loaded in api");
