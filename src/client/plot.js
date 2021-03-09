@@ -1,7 +1,6 @@
-require("dotenv").config();
 const fetchMatchPlayedData = function () {
   let matchPlayedArray = [];
-  fetch(process.env.APP_HOST + "/matchplayed")
+  fetch("https://ipl-highchart.herokuapp.com/matchplayed")
     .then(function (response) {
       response.json().then(function (data) {
         console.log(" data loaded in api");

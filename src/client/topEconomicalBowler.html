@@ -35,8 +35,8 @@
 </body>
 <script>
     const fetchTopEconomicData = function () {
-        require("dotenv").config();
-        fetch(process.env.APP_HOST + '/topeconomicData').then(function (response) {
+
+        fetch('https://ipl-highchart.herokuapp.com/topeconomicData').then(function (response) {
             response.json().then(function (data) {
                 console.log(' data loaded in api')
                 displayExtraRunsConcededHighChart(data);

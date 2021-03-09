@@ -43,8 +43,8 @@
 <script>
     const fetchMatchWonData = function () {
         let matchWonArray = [];
-        require("dotenv").config();
-        fetch(process.env.APP_HOST + 'matchwonData').then(function (response) {
+
+        fetch('https://ipl-highchart.herokuapp.com/matchwonData').then(function (response) {
             response.json().then(function (data) {
                 console.log(data)
                 //create a dropdown of years and add that to select tag

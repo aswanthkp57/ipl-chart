@@ -46,8 +46,8 @@
 </body>
 <script>
     const fetchExtraRunData = function () {
-        require("dotenv").config();
-        fetch(process.env.APP_HOST + 'extrarunsconcededData').then(function (response) {
+
+        fetch('https://ipl-highchart.herokuapp.com/extrarunsconcededData').then(function (response) {
             response.json().then(function (data) {
                 // console.log(data)
                 displayExtraRunsConcededHighChart(data);
