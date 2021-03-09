@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const dataModel = require("../database/dataModel");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
   switch (req.url) {
